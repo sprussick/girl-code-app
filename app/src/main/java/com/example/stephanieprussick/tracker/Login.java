@@ -1,5 +1,6 @@
 package com.example.stephanieprussick.tracker;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity {
 
@@ -36,7 +38,21 @@ public class Login extends AppCompatActivity {
             {
                 if (task.isSuccessful())
                 {
-                    Toast.makeText(getApplicationContext(), "User log in successful", Toast.LENGTH_LONG).show();
+                    FirebaseUser user = auth.getCurrentUser();
+                    if (user.isEmailVerified())
+                    {
+                        Intent intent = new Intent(Login.this, UserLocationActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(), "Email is not verified yet", Toast.LENGTH_LONG).show();
+                    }
+//                    Toast.makeText(getApplicationContext(), "User log in successful", Toast.LENGTH_LONG).show();
+//                    Intent intent = new Intent(Login.this, UserLocationActivity.class);
+//                    startActivity(intent);
+
                 }
                 else
                 {
